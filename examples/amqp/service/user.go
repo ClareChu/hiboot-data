@@ -18,7 +18,6 @@ import (
 	"hidevops.io/hiboot-data/starter/amqp"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-	"time"
 )
 
 type UserService struct {
@@ -40,11 +39,19 @@ const (
 	mgsConnect = "hello world"
 	exchange   = "test23223"
 	queueName  = "Test"
+	queueName1 = "Test1"
 )
 
 func (s *UserService) Create() error {
 	shn := s.newChannel()
 	err := shn.CreateFanout(queueName, exchange)
+	return err
+}
+
+
+func (s *UserService) Create1() error {
+	shn := s.newChannel()
+	err := shn.CreateFanout(queueName1, exchange)
 	return err
 }
 
@@ -72,7 +79,7 @@ func (s *UserService) ReceiveFanout() error {
 		for cha := range chas {
 			log.Debugf("cha :%v", *amqp.BytesToString(&(cha.Body)))
 			cha.Ack(false)
-			c ++
+			c++
 			log.Debugf("cha :%v", c)
 			if c == 5 {
 				return
@@ -84,13 +91,21 @@ func (s *UserService) ReceiveFanout() error {
 
 func (s *UserService) ReceiveFanout3() error {
 	go func() {
-		for {
-			shn := s.newChannel()
-			c, _ := shn.ReceiveFanout("test22222", exchange)
-			if c != nil {
-				log.Infof("cha: %s", *c)
+		c := 1
+		shn := s.newChannel()
+		defer shn.Close()
+		chas, err := shn.Receive(queueName1)
+		if err != nil {
+			log.Infof("err: %s", err)
+		}
+		for cha := range chas {
+			log.Debugf("cha :%v", *amqp.BytesToString(&(cha.Body)))
+			cha.Ack(false)
+			c++
+			log.Debugf("cha :%v", c)
+			if c == 5 {
+				return
 			}
-			time.Sleep(5 * time.Second)
 		}
 	}()
 	return nil

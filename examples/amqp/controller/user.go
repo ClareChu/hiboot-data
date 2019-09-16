@@ -59,3 +59,9 @@ func (c *UserController) PostCreate() (model.Response, error) {
 	err := c.userService.Create()
 	return nil, err
 }
+
+
+func (c *UserController) PostCreate1() (model.Response, error) {
+	err := c.userService.Create1()
+	return nil, err
+}
