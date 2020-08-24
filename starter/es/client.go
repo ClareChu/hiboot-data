@@ -26,8 +26,7 @@ func newClient() (client *Client) {
 
 func (c *Client) Connect(p *Properties) (err error) {
 	esUrl := fmt.Sprintf("http://%s:%d", p.Host, p.Port)
-	client, err := elastic.NewSimpleClient(
-		elastic.SetURL(esUrl),
+	client, err := elastic.NewClient(
 		elastic.SetHealthcheckInterval(10*time.Second),
 		elastic.SetURL(esUrl),
 		elastic.SetBasicAuth(p.Username, p.Password),
