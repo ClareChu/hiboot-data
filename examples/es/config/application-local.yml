@@ -7,12 +7,7 @@ logging:
   level: info
 
 es:
-<<<<<<< HEAD
-  host: 10.10.14.6
+  host: 10.10.15.94
   port: 9200
   username: elastic
-  password: password
-=======
-  host: 10.10.13.176
-  port: 9200
->>>>>>> mongo
+  password: password131231
