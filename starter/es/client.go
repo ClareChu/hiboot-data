@@ -2,7 +2,8 @@ package es
 
 import (
 	"fmt"
-	"github.com/olivere/elastic/v6"
+	"gopkg.in/olivere/elastic.v5"
+	/*"github.com/olivere/elastic/v6"*/
 	"hidevops.io/hiboot/pkg/at"
 	"time"
 	"hidevops.io/hiboot/pkg/log"
@@ -26,12 +27,22 @@ func newClient() (client *Client) {
 
 func (c *Client) Connect(p *Properties) (err error) {
 	esUrl := fmt.Sprintf("http://%s:%d", p.Host, p.Port)
+<<<<<<< HEAD
 	client, err := elastic.NewSimpleClient(
 		elastic.SetURL(esUrl),
 		elastic.SetHealthcheckInterval(10*time.Second),
 		elastic.SetURL(esUrl),
 		elastic.SetBasicAuth(p.Username, p.Password),
 		)
+=======
+	client, err := elastic.NewClient(
+		elastic.SetURL(esUrl),
+		elastic.SetSniff(false),
+	)
+/*	client, err := elastic.NewSimpleClient(
+		elastic.SetURL(esUrl),
+	)*/
+>>>>>>> mongo
 	if err != nil {
 		log.Errorf("elastic connection errors:%v", esUrl)
 		return
