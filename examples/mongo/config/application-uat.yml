@@ -1,0 +1,13 @@
+# config file for testing
+
+server:
+  port: 8080
+
+logging:
+  level: info
+
+mongo:
+  host: 10.10.14.2
+  port: 27017
+  username: admin
+  password: 50fb3e88-3991-40d9-9ff3-5a8cf6768363
