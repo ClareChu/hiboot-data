@@ -14,20 +14,34 @@
 
 package gorm
 
+import (
+	"hidevops.io/hiboot/pkg/at"
+)
+
 type Config struct {
 	Decrypt    bool   `json:"decrypt" default:"true"`
 	DecryptKey string `json:"decrypt_key"`
 }
 
-type properties struct {
-	Type      string `json:"type" default:"mysql"` // mysql, postgres, sqlite3, mssql,
-	Host      string `json:"host" default:"mysql-dev"`
-	Port      string `json:"port" default:"3306"`
-	Database  string `json:"database"`
-	Username  string `json:"username"`
-	Password  string `json:"password"`
-	Charset   string `json:"charset" default:"utf8"`
-	ParseTime bool   `json:"parse_time" default:"true"`
-	Loc       string `json:"loc" default:"Asia/Shanghai"`
-	Config    Config `json:"config"`
+type Properties struct {
+	// annotation ConfigurationProperties
+	at.ConfigurationProperties `value:"gorm"`
+
+	Type            string `json:"type" default:"mysql"` // mysql, postgres, sqlite3, mssql,
+	Host            string `json:"host" default:"mysql-dev"`
+	Port            string `json:"port" default:"3306"`
+	Database        string `json:"database"`
+	Username        string `json:"username"`
+	Password        string `json:"password"`
+	Charset         string `json:"charset" default:"utf8"`
+	ParseTime       bool   `json:"parse_time" default:"true"`
+	Loc             string `json:"loc" default:"Asia/Shanghai"`
+	Config          Config `json:"config"`
+	ConnMaxLifetime string `json:"connMaxLifetime" default:"60s"`
+	MaxIdleConns    int    `json:"maxIdle_conns" default:"20"`
+	MaxOpenConns    int    `json:"maxOpen_conns" default:"200"`
+	AutoReconnect   bool   `json:"auto_reconnect" default:"true"`
+	RetryTimes      int    `json:"retry_times" default:"-1"`
+	Interval        string `json:"interval" default:"3s"`
+	NowRetryTimes   int    `json:"now_retry_times" default:"0"`
 }

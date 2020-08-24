@@ -15,14 +15,16 @@
 package service
 
 import (
+	"errors"
+	str_amqp "github.com/streadway/amqp"
 	"hidevops.io/hiboot-data/starter/amqp"
 	"hidevops.io/hiboot/pkg/app"
 	"hidevops.io/hiboot/pkg/log"
-
+	"time"
 )
 
 type UserService struct {
-	channel *amqp.Channel
+	newChannel amqp.NewChannel
 }
 
 func init() {
@@ -30,97 +32,102 @@ func init() {
 }
 
 // will inject BoltRepository that configured in hidevops.io/hiboot/pkg/starter/data/bolt
-func newUserService(channel *amqp.Channel) *UserService {
+func newUserService(newChannel amqp.NewChannel) *UserService {
 	return &UserService{
-		channel: channel,
+		newChannel: newChannel,
 	}
 }
 
 const (
 	mgsConnect = "hello world"
-	exchange   = "test1"
+	exchange   = "test23223"
 	queueName  = "Test"
+	key        = "hh"
 )
 
+func (s *UserService) Create() error {
+	shn := s.newChannel()
+	if shn == nil {
+		return errors.New("get shannel error")
+	}
+	err := shn.CreateFanout(queueName, exchange)
+	return err
+}
+
+func (s *UserService) Create1() error {
+	shn := s.newChannel()
+	if shn == nil {
+		return errors.New("get shannel error")
+	}
+	err := shn.Create(queueName, exchange, key, str_amqp.ExchangeFanout)
+	return err
+}
+
 func (s *UserService) PublishDirect() error {
-	err := s.channel.PublishDirect(exchange, queueName,  "hello", "info")
+	shn := s.newChannel()
+	if shn == nil {
+		return errors.New("get shannel error")
+	}
+	err := shn.PublishDirect(exchange, queueName, mgsConnect, "info")
+	return err
+}
+
+func (s *UserService) Publish() error {
+	shn := s.newChannel()
+	if shn == nil {
+		return errors.New("get shannel error")
+	}
+	err := shn.Push(exchange, key, "100000", "hello")
 	return err
 }
 
 func (s *UserService) PublishFanout() error {
-	err := s.channel.PublishFanout(exchange, "hello")
+	shn := s.newChannel()
+	if shn == nil {
+		return errors.New("get shannel error")
+	}
+	err := shn.PublishFanout(exchange, "hello")
 	return err
 }
-//
-//func (s *UserService) Receive() {
-//	for {
-//		msg, ok, err := s.channel.Get(queueName, true)
-//
-//		if !ok {
-//			fmt.Println("do not get msg")
-//			time.Sleep(3*1e9)
-//			continue
-//		}
-//
-//		//err = s.channel.Ack(msg.DeliveryTag, false)
-//		log.Infof("err :%v", err)
-//
-//		b := BytesToString(&(msg.Body))
-//		fmt.Printf("receve msg is :%s\n", *b)
-//	}
-//
-//
-//}
 
 func (s *UserService) ReceiveFanout() error {
 	go func() {
-		for {
-			c, err := s.channel.ReceiveFanout("test2", exchange)
-			log.Infof("cha: %s,  err: %v", *c, err)
+		c := 1
+		shn := s.newChannel()
+		if shn == nil {
+			return
+		}
+		defer shn.Close()
+		chas, err := shn.Receive(queueName)
+		if err != nil {
+			log.Infof("err: %s", err)
+		}
+		for cha := range chas {
+			log.Debugf("cha :%v", *amqp.BytesToString(&(cha.Body)))
+			cha.Ack(false)
+			c++
+			log.Debugf("cha :%v", c)
+			if c == 5 {
+				return
+			}
 		}
 	}()
 	return nil
-
-
 }
-
 
 func (s *UserService) ReceiveFanout3() error {
 	go func() {
 		for {
-			c, err := s.channel.ReceiveFanout("test1", exchange)
-			log.Infof("cha: %s,  err: %v", *c, err)
+			shn := s.newChannel()
+			if shn == nil {
+				return
+			}
+			c, _ := shn.ReceiveFanout("test22222", exchange)
+			if c != nil {
+				log.Infof("cha: %s", *c)
+			}
+			time.Sleep(5 * time.Second)
 		}
 	}()
 	return nil
-
 }
-
-//func (s *UserService) ReceiveFanout1() {
-//	for {
-//		_, err := s.channel.QueueDeclare("test1", false, false,
-//			false, false, nil)
-//
-//		err = s.channel.QueueBind("test1", "", exchange, false, nil)
-//		msg, ok, err := s.channel.Get("test1", true)
-//		if !ok {
-//			fmt.Println("do not get msg1")
-//			time.Sleep(3*1e9)
-//			continue
-//		}
-//
-//		//err = s.channel.Ack(msg.DeliveryTag, false)
-//		log.Infof("err :%v", err)
-//
-//		b := BytesToString(&(msg.Body))
-//		fmt.Printf("receve msg is1 :%s\n", *b)
-//	}
-//
-//
-//}
-//
-//func BytesToString(b *[]byte) *string {
-//	s := bytes.NewBuffer(*b)
-//	r := s.String()
-//	return &r
-//}
