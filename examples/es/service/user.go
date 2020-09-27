@@ -18,7 +18,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/olivere/elastic/v6"
+	"github.com/olivere/elastic/v7"
 	"hidevops.io/hiboot-data/examples/es/entity"
 	"hidevops.io/hiboot-data/starter/es"
 	"hidevops.io/hiboot/pkg/app"
@@ -77,7 +77,7 @@ func (s *userServiceImpl) GetUser(id string) (user *entity.User, err error) {
 		// Handle Error
 		return
 	}
-	err = json.Unmarshal(*esResponse.Source, &user)
+	err = json.Unmarshal(esResponse.Source, &user)
 	return
 }
 
@@ -96,7 +96,7 @@ func (s *userServiceImpl) GetAll() (users *[]entity.User, err error) {
 		log.Printf("Found a total of %d indice\n", res.TotalHits())
 		for _, hit := range res.Hits.Hits {
 			var user entity.User
-			err := json.Unmarshal(*hit.Source, &user)
+			err := json.Unmarshal(hit.Source, &user)
 			if err != nil {
 				log.Printf("%v", err)
 				return nil, err

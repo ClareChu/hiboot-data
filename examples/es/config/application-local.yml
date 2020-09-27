@@ -7,7 +7,7 @@ logging:
   level: info
 
 es:
-  host: 10.10.15.94
+  host: 10.10.14.6
   port: 9200
   username: elastic
-  password: password131231
+  password: password

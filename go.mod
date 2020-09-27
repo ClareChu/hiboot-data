@@ -23,12 +23,11 @@ require (
 	github.com/lib/pq v1.0.0 // indirect
 	github.com/magiconair/properties v1.8.0
 	github.com/mattn/go-sqlite3 v1.9.0 // indirect
-	github.com/olivere/elastic v6.2.27+incompatible // indirect
-	github.com/olivere/elastic/v6 v6.2.1
+	github.com/olivere/elastic/v7 v7.0.20
 	github.com/prometheus/client_golang v1.1.0 // indirect
 	github.com/soheilhy/cmux v0.1.4 // indirect
 	github.com/streadway/amqp v0.0.0-20180315184602-8e4aba63da9f
-	github.com/stretchr/testify v1.4.0
+	github.com/stretchr/testify v1.5.1
 	github.com/tmc/grpc-websocket-proxy v0.0.0-20190109142713-0ad062ec5ee5 // indirect
 	github.com/ugorji/go v1.1.7 // indirect
 	github.com/xiang90/probing v0.0.0-20190116061207-43a291ad63a2 // indirect
@@ -37,7 +36,7 @@ require (
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
 	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 // indirect
 	hidevops.io/hiboot v1.4.0
-
+	google.golang.org/appengine v1.4.0 // indirect
 )
 
 go 1.13
