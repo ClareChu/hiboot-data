@@ -36,8 +36,8 @@ require (
 	go.mongodb.org/mongo-driver v1.3.0
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
 	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 // indirect
-	hidevops.io/hiboot v1.3.0
-
+	google.golang.org/appengine v1.4.0 // indirect
+	hidevops.io/hiboot v1.3.1
 )
 
 go 1.13
