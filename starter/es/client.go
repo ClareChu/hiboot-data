@@ -2,8 +2,7 @@ package es
 
 import (
 	"fmt"
-	"gopkg.in/olivere/elastic.v5"
-	/*"github.com/olivere/elastic/v6"*/
+	"github.com/olivere/elastic/v7"
 	"hidevops.io/hiboot/pkg/at"
 	"hidevops.io/hiboot/pkg/log"
 )
@@ -28,7 +27,7 @@ func (c *Client) Connect(p *Properties) (err error) {
 		elastic.SetURL(esUrl),
 		elastic.SetSniff(false),
 	)
-/*	client, err := elastic.NewSimpleClient(
+	/*	client, err := elastic.NewSimpleClient(
 		elastic.SetURL(esUrl),
 	)*/
 	if err != nil {
