@@ -36,7 +36,8 @@ require (
 	golang.org/x/net v0.0.0-20200202094626-16171245cfb2
 	golang.org/x/time v0.0.0-20190921001708-c4c64cad1fd0 // indirect
 	hidevops.io/hiboot v1.4.0
-	google.golang.org/appengine v1.4.0 // indirect
 )
 
 go 1.13
+
+replace github.com/olivere/elastic/v7 => github.com/ClareChu/elastic/v7 v7.0.21-0.20200928093007-3773ff990fa6
