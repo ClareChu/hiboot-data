@@ -5,3 +5,9 @@ server:
 
 logging:
   level: info
+
+es:
+  host: 10.10.14.6
+  port: 9200
+  username: elastic
+  password: password
