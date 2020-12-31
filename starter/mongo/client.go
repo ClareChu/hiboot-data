@@ -15,6 +15,7 @@ type Properties struct {
 	at.ConfigurationProperties `value:"mongo"`
 	Port                       int    `json:"port" default:"5672"`
 	Host                       string `json:"host" default:"127.0.0.1"`
+	Url                        string `json:"url" default:""`
 	Username                   string `json:"username" default:""`
 	Password                   string `json:"password" default:"password"`
 	Timeout                    string `json:"timeout" default:"5s"`
@@ -37,6 +38,8 @@ func (c *Client) Connect(p *Properties) (err error) {
 	mongoUrl := ""
 	if p.Username == "" {
 		mongoUrl = fmt.Sprintf("mongodb://%s:%d", p.Host, p.Port)
+	} else if p.Url != "" {
+		mongoUrl = p.Url
 	} else {
 		mongoUrl = fmt.Sprintf("mongodb://%s:%s@%s:%d", p.Username, p.Password, p.Host, p.Port)
 	}
